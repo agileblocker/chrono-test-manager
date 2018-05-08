@@ -8,11 +8,8 @@
 
 import unittest
 import time
-import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
-logging.basicConfig(filename='results.log', level=logging.DEBUG, format='%(asctime)s: %(message)s')
 
 # This is building the actual test case
 class yahoo_top_header(unittest.TestCase):
@@ -52,7 +49,7 @@ class yahoo_top_header(unittest.TestCase):
         assert "Politics" in driver.title
         driver.back()
 
-        elem = driver.find_element_by_link_text("Entertainment").click
+        elem = driver.find_element_by_link_text("Entertainment").click()
         time.sleep(2)
         assert "Entertainment" in driver.title
         driver.back()
@@ -63,12 +60,10 @@ class yahoo_top_header(unittest.TestCase):
         driver.back()
 
 
-
 # Closes current tab; if no other tabs are open, closes browser.
     def tearDown(self):
         self.driver.close()
 
-
 # This is the code to run the test suite.
-if __name__ == "__main__":
-    unittest.main()
+# if __name__ == "__main__":
+    # unittest.main()
