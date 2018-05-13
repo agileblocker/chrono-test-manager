@@ -12,12 +12,10 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-logging.basicConfig(filename='results.log', level=logging.DEBUG, format='%(asctime)s: %(message)s')
-
 # This is building the actual test case
 class yahoo_top_header(unittest.TestCase):
     def setUp(self):
-        self.driver=webdriver.Chrome("C:\\Users\\Chrono\\Desktop\\gitrep\\chronotester\\venv\\selenium\\webdriver\\chrome\\chromedriver.exe")
+        self.driver=webdriver.Chrome()
     def test_top_header_in_yahoo(self):
         driver=self.driver
         driver.get("http://www.yahoo.com/")
@@ -70,5 +68,5 @@ class yahoo_top_header(unittest.TestCase):
 
 
 # This is the code to run the test suite.
-if __name__ == "__main__":
-    unittest.main()
+# if __name__ == "__main__":
+    # unittest.main()

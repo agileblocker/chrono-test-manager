@@ -14,7 +14,7 @@ from selenium.webdriver.common.keys import Keys
 # This is building the actual test case
 class yahoo_top_header(unittest.TestCase):
     def setUp(self):
-        self.driver=webdriver.Chrome("C:\\Users\\Chrono\\Desktop\\gitrep\\chronotester\\venv\\selenium\\webdriver\\chrome\\chromedriver.exe")
+        self.driver=webdriver.Chrome()
     def test_top_header_in_yahoo(self):
         driver=self.driver
         driver.get("http://www.yahoo.com/")
@@ -65,5 +65,5 @@ class yahoo_top_header(unittest.TestCase):
         self.driver.close()
 
 # This is the code to run the test suite.
-# if __name__ == "__main__":
-    # unittest.main()
+#if __name__ == "__main__":
+#    unittest.main()

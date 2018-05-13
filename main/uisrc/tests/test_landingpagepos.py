@@ -13,22 +13,19 @@ from selenium.webdriver.common.keys import Keys
 # This is building the actual test case
 class yahoo_landing_page(unittest.TestCase):
     def setUp(self):
-        self.driver=webdriver.Chrome("C:\\Users\\ryan.miller\\Desktop\\chronotester\\main\\uisrc\\selenium\\chromedriver.exe")
+        self.driver=webdriver.Chrome()
     def test_landing_page_in_yahoo(self):
         driver=self.driver
         driver.get("http://www.yahoo.com/")
         self.assertIn("Yahoo", driver.title)
 
 # This is looking for the element ID for the big Yahoo! button in the top left corner.
-        elem=driver.find_element_by_id("uh-logo").click()
+        #elem=driver.find_element_by_id("uh-logo").click()
 
 # Closes current tab; if no other tabs are open, closes browser.
     def tearDown(self):
         self.driver.close()
 
-# This is the code to run the test suite.
-if __name__ == "__main__":
-    unittest.main()
 
 # NOTE: I wanted to make a positive and a negative first test case to ensure that I am getting actual results
 # This is the positive test

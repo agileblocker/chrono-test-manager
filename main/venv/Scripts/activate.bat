@@ -1,5 +1,5 @@
 @echo off
-set "VIRTUAL_ENV=C:\Users\ryan.miller\Desktop\chronotester\main\venv"
+set "VIRTUAL_ENV=C:\Users\chron\Documents\GitHub\chrono\main\venv"
 
 if not defined PROMPT (
     set "PROMPT=$P$G"

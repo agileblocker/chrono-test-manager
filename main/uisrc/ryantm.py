@@ -3,6 +3,7 @@
 import wx
 import os
 import subprocess
+from wx.lib.dialogs import ScrolledMessageDialog
 try:
     import wx.lib.platebtn as platebtn
 except ImportError:
@@ -31,11 +32,16 @@ class MainFrame(wx.Frame):
 
 
 #-----directory construction-----
-        dir3 = wx.GenericDirCtrl(pnl, -1, size=(400,400),
+        self.dir = wx.GenericDirCtrl(pnl, -1, size=(400,400),
                                  style=wx.DIRCTRL_SHOW_FILTERS |
-                                       wx.DIRCTRL_3D_INTERNAL |
-                                       wx.DIRCTRL_MULTIPLE,
+                                       wx.DIRCTRL_3D_INTERNAL #|
+                                       #wx.DIRCTRL_MULTIPLE
+                                       ,
                                  filter="Test Files (test*.py)|test*.py|Python files (*.py)|*.py|All files (*.*)|*.*")
+
+# bindings for mouse clicks in the directory window
+        self.Bind(wx.EVT_DIRCTRL_FILEACTIVATED, self.OnActivate, self.dir)
+        self.Bind(wx.EVT_DIRCTRL_SELECTIONCHANGED, self.OnSelectionChanged, self.dir)
 
 #-----button construction-----
         run_select_Btn = wx.Button(pnl, -1,  "   Run Selected Test Case    ",
@@ -60,7 +66,7 @@ class MainFrame(wx.Frame):
         bs1V.size = (961, 612)
 #-----button events-----
         # Create event handlers for buttons in main window
-        self.Bind(wx.EVT_BUTTON, self.OnRunTC, run_select_Btn)
+        self.Bind(wx.EVT_BUTTON, self.OnRunSelect, run_select_Btn)
         self.Bind(wx.EVT_BUTTON, self.OnEditTC, edit_select_Btn)
         #self.Bind(wx.EVT_BUTTON, self.OnImportTC, import_case_Btn)
         #self.Bind(wx.EVT_BUTTON, self.OnRunTS, run_full_Btn)
@@ -72,7 +78,7 @@ class MainFrame(wx.Frame):
                 wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
 
 #-----logging window-----
-        logcon = wx.TextCtrl(pnl, wx.ID_ANY, size=(400,400),
+        self.logcon = wx.TextCtrl(pnl, wx.ID_ANY, size=(400,400),
                           style = wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
 
 #-----flex grid set for two columns-----
@@ -80,11 +86,12 @@ class MainFrame(wx.Frame):
 
         # put items into the two columns, alternating left and right sides
         sz.AddGrowableCol(0)
+        sz.AddGrowableCol(2)
         #sz.Add(wx.StaticText(pnl, label=" Current Test Suite:")) # left title
         #sz.Add(wx.StaticText(pnl, label="       Choose an option:"))#Right title
-        sz.Add(dir3, 0, wx.EXPAND, 20) # directory left
+        sz.Add(self.dir, 0, wx.EXPAND, 20) # directory left
         sz.Add(btnSizer, 0, wx.EXPAND|wx.ALL, 20) # buttons center
-        sz.Add(logcon, 0, wx.EXPAND, 20) #logging console right
+        sz.Add(self.logcon, 0, wx.EXPAND, 20) #logging console right
         # add the two column flexgridsizer to the main box sizer for the panel
         bs1V.Add(sz, 0, wx.EXPAND|wx.ALL, 10)
         pnl.SetSizer(bs1V) # assign the main box sizer to the panel
@@ -177,9 +184,41 @@ class MainFrame(wx.Frame):
                   wx.FD_PREVIEW
             )
         if dlg.ShowModal() == wx.ID_OK:
-            global paths
-            paths = dlg.GetPaths()
-            subprocess.Popen(['C:\\Users\\Chrono\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe', paths])
+            # global paths
+            file = dlg.GetPath()
+            self.run_program(file)
+
+    def OnActivate(self, event): #double click on file name)
+        print('On Activate called')
+        file_path = self.dir.GetFilePath()
+        print('File Activated: %s\n' % file_path)
+        f = open(file_path, "r")
+        msg = f.read()
+        f.close()
+
+        dlg = wx.lib.dialogs.ScrolledMessageDialog(self, msg, "inspect "+file_path)
+        dlg.ShowModal()
+
+    def OnSelectionChanged(self, event):
+        newpath = self.dir.GetPath()
+        if os.path.isdir(newpath):
+            print('Selection Changed: %s\n' % newpath)
+            print('pre-change cwd', os.getcwd())
+            os.chdir(newpath)
+            print('post-change cwd', os.getcwd())
+
+    def OnRunSelect(self, event):
+        file = self.dir.GetFilePath()
+        self.run_program(file)
+
+    def run_program(self, file):
+        print('python -m unittest ' + file)
+        running_msg = '\nTesting:  ' + str(os.path.basename(file)) + '\n'
+        print(running_msg)
+        self.logcon.AppendText(running_msg)
+        result = subprocess.run('python -m unittest ' + file, stderr=subprocess.PIPE)
+        msg = result.stderr.decode('utf-8')
+        self.logcon.AppendText(msg)
 
     def OnEditTC(self, event):
         """Open a test case to edit"""
@@ -193,8 +232,9 @@ class MainFrame(wx.Frame):
                   wx.FD_PREVIEW
             )
         if dlg.ShowModal() == wx.ID_OK:
-            global paths
-            paths = dlg.GetPaths()
+            #global paths
+            path = dlg.GetPaths()
+            subprocess.Popen(['start', path], shell=True)
 
 
 if __name__ == '__main__':
