@@ -20,6 +20,7 @@ class MainFrame(wx.Frame):
 
     def __init__(self, *args, **kw):
         super(MainFrame, self).__init__(*args, **kw, size=(1280,720))
+
 #-----panel construction-----
         pnl = wx.Panel(self)
 
@@ -67,7 +68,7 @@ class MainFrame(wx.Frame):
 #-----button events-----
         # Create event handlers for buttons in main window
         self.Bind(wx.EVT_BUTTON, self.OnRunSelect, run_select_Btn)
-        self.Bind(wx.EVT_BUTTON, self.OnEditTC, edit_select_Btn)
+        self.Bind(wx.EVT_BUTTON, self.OnEditSelect, edit_select_Btn)
         #self.Bind(wx.EVT_BUTTON, self.OnImportTC, import_case_Btn)
         #self.Bind(wx.EVT_BUTTON, self.OnRunTS, run_full_Btn)
 
@@ -151,9 +152,8 @@ class MainFrame(wx.Frame):
         # activated then the associated handler function will be called.
         self.Bind(wx.EVT_MENU, self.OnHello, helloItem)
         #self.Bind(wx.EVT_MENU, self.OnNewTC, newtcItem)
-        #self.Bind(wx.EVT_MENU, self.OnNewTS, newtsItem)
         self.Bind(wx.EVT_MENU, self.OnRunTC, runtcItem)
-        #self.Bind(wx.EVT_MENU, self.OnOpenTS, opentsItem)
+        self.Bind(wx.EVT_MENU, self.OnEditTC, edittcItem)
         #self.Bind(wx.EVT_MENU, self.OnImportTC, importtcItem)
 
         self.Bind(wx.EVT_MENU, self.OnExit,  exitItem)
@@ -173,7 +173,6 @@ class MainFrame(wx.Frame):
                       wx.OK|wx.ICON_INFORMATION)
 
     def OnRunTC(self, event):
-        """Open a test case to run"""
         dlg = wx.FileDialog(
             self, message="Choose a file",
             defaultDir=os.getcwd(),
@@ -202,10 +201,10 @@ class MainFrame(wx.Frame):
     def OnSelectionChanged(self, event):
         newpath = self.dir.GetPath()
         if os.path.isdir(newpath):
-            print('Selection Changed: %s\n' % newpath)
-            print('pre-change cwd', os.getcwd())
+            # print('Selection Changed: %s\n' % newpath)
+            # print('pre-change cwd', os.getcwd())
             os.chdir(newpath)
-            print('post-change cwd', os.getcwd())
+            # print('post-change cwd', os.getcwd())
 
     def OnRunSelect(self, event):
         file = self.dir.GetFilePath()
@@ -221,7 +220,6 @@ class MainFrame(wx.Frame):
         self.logcon.AppendText(msg)
 
     def OnEditTC(self, event):
-        """Open a test case to edit"""
         dlg = wx.FileDialog(
             self, message="Choose a file",
             defaultDir=os.getcwd(),
@@ -236,6 +234,11 @@ class MainFrame(wx.Frame):
             path = dlg.GetPaths()
             subprocess.Popen(['start', path], shell=True)
 
+    def OnEditSelect(self, event):
+            file = self.dir.GetFilePath()
+            ext = os.path.splitext(file)[-1].lower()
+            if ext == ".py":
+                subprocess.Popen(['start', file], shell=True)
 
 if __name__ == '__main__':
     # When this module is run (not imported) then create the app, the
