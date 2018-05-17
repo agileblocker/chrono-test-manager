@@ -23,6 +23,7 @@ class MainFrame(wx.Frame):
 
 #-----panel construction-----
         pnl = wx.Panel(self)
+        self.pnl = wx.Panel(self)
 
 #-----header text-----
         st = wx.StaticText(pnl, label=" Chrono Test Manager", pos=(25,25))
@@ -46,20 +47,23 @@ class MainFrame(wx.Frame):
 
 #-----button construction-----
         run_select_Btn = wx.Button(pnl, -1,  "   Run Selected Test Case    ",
-            size=(200,75))
-        edit_select_Btn = wx.Button(pnl, -1, "    Edit Selected Test Case     ",
-            size=(200,75))
+            size=(200,60))
+        edit_select_Btn = wx.Button(pnl, -1, "    Edit Selected File     ",
+            size=(200,60))
         import_case_Btn = wx.Button(pnl, -1, "Import Test Case",
-            size=(200,75))
-        run_full_Btn = wx.Button(pnl, -1,    "      Run Test Suite (Coming Soon!)       ",
-            size=(200,75))
+            size=(200,60))
+        clear_result_Btn = wx.Button(pnl, -1,    "      Clear Results Window       ",
+            size=(200,60))
+        export_result_Btn = wx.Button(pnl, -1,    "      Export Results File       ",
+            size=(200,60))        
 
 #-----button sizer construction-----
         btnSizer = wx.BoxSizer(wx.VERTICAL)
         btnSizer.Add(run_select_Btn)
         btnSizer.Add(edit_select_Btn)
         btnSizer.Add(import_case_Btn)
-        btnSizer.Add(run_full_Btn)
+        btnSizer.Add(clear_result_Btn)
+        btnSizer.Add(export_result_Btn)
 
 #-----button panel sizer construction-----
         bs1V = wx.BoxSizer(wx.VERTICAL)
@@ -70,7 +74,8 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnRunSelect, run_select_Btn)
         self.Bind(wx.EVT_BUTTON, self.OnEditSelect, edit_select_Btn)
         #self.Bind(wx.EVT_BUTTON, self.OnImportTC, import_case_Btn)
-        #self.Bind(wx.EVT_BUTTON, self.OnRunTS, run_full_Btn)
+        #self.Bind(wx.EVT_BUTTON, self.OnClearResults, clear_result_Btn)
+        #self.Bind(wx.EVT_BUTTON, self.OnExportResults, export_result_Btn)
 
 #-----title static text in sizer-----
         bs1V.Add(3, 3)
@@ -96,6 +101,7 @@ class MainFrame(wx.Frame):
         # add the two column flexgridsizer to the main box sizer for the panel
         bs1V.Add(sz, 0, wx.EXPAND|wx.ALL, 10)
         pnl.SetSizer(bs1V) # assign the main box sizer to the panel
+
         #---------------------------------------------
         # set sizer on the frame itself as well,
         # so if we scale frame all else adjusts

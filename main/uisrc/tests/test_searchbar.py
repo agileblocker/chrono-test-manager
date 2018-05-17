@@ -12,9 +12,9 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 # This is building the actual test case
-class yahoo_top_header(unittest.TestCase):
+class yahoo_searchbar(unittest.TestCase):
     def setUp(self):
-        self.driver=webdriver.Chrome("C:\\Users\\ryan.miller\\Desktop\\chronotester\\main\\uisrc\\selenium\\chromedriver.exe")
+        self.driver=webdriver.Chrome()
     def test_top_header_in_yahoo(self):
         driver=self.driver
         driver.get("http://www.yahoo.com/")
@@ -24,14 +24,16 @@ class yahoo_top_header(unittest.TestCase):
         driver.maximize_window()
 
 # Verify enter search in search bar and hit enter key yields results page.
+    #def verify_search_by_enter_key(self):
         time.sleep(3)
         driver.find_element_by_id("uh-search-box").send_keys("Chicago Python User Group", Keys.ENTER)
         time.sleep(3)
-        assert "Chicago Python User Group" in driver.title
+        assert "Chicago Python Usergroup" in driver.title
         time.sleep(2)
         driver.back()
 
 # Verify enter search in search bar and click button yields results page.
+    #def verify_search_by_search_button(self):
         time.sleep(3)
         driver.find_element_by_id("uh-search-box").send_keys("Ars Technica")
         time.sleep(2)
@@ -48,5 +50,5 @@ class yahoo_top_header(unittest.TestCase):
         self.driver.close()
 
 # This is the code to run the test suite.
-if __name__ == "__main__":
-    unittest.main()
+# if __name__ == "__main__":
+    # unittest.main()

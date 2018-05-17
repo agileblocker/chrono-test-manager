@@ -14,13 +14,13 @@ from selenium.webdriver.common.keys import Keys
 class yahoo_landing_page(unittest.TestCase):
     def setUp(self):
         self.driver=webdriver.Chrome()
-    def test_landing_page_in_yahoo(self):
+    def test_top_header_in_yahoo(self):
         driver=self.driver
         driver.get("http://www.yahoo.com/")
         self.assertIn("Yahoo", driver.title)
 
-# This is looking for the element ID for the big Yahoo! button in the top left corner.
-        #elem=driver.find_element_by_id("uh-logo").click()
+ #This is looking for the element ID for the big Yahoo! button in the top left corner.
+        elem=driver.find_element_by_id("uh-logo").click()
 
 # Closes current tab; if no other tabs are open, closes browser.
     def tearDown(self):

@@ -13,7 +13,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 # This is building the actual test case
-class yahoo_top_header(unittest.TestCase):
+class yahoo_main_header(unittest.TestCase):
     def setUp(self):
         self.driver=webdriver.Chrome()
     def test_top_header_in_yahoo(self):
