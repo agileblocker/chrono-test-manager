@@ -47,15 +47,15 @@ class MainFrame(wx.Frame):
 
 #-----button construction-----
         run_select_Btn = wx.Button(pnl, -1,  "   Run Selected Test Case    ",
-            size=(200,60))
+            size=(200,62))
         edit_select_Btn = wx.Button(pnl, -1, "    Edit Selected File     ",
-            size=(200,60))
+            size=(200,62))
         import_case_Btn = wx.Button(pnl, -1, "Import Test Case",
-            size=(200,60))
+            size=(200,62))
         clear_result_Btn = wx.Button(pnl, -1,    "      Clear Results Window       ",
-            size=(200,60))
+            size=(200,62))
         export_result_Btn = wx.Button(pnl, -1,    "      Export Results File       ",
-            size=(200,60))        
+            size=(200,62))        
 
 #-----button sizer construction-----
         btnSizer = wx.BoxSizer(wx.VERTICAL)
